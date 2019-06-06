@@ -16,19 +16,19 @@
     Script posted over:
     https://github.com/tomogo/Powershell
 .EXAMPLE
-    Use:  run-backup.ps SourceDir DestinationDir
+    Use:  run-backup.ps1 SourceDir DestinationDir
 .EXAMPLE
-    Like: run-backup.ps C:\Users\MyLogin\Documents D:\Backup
-    Or:   run-backup.ps C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
+    Like: run-backup.ps1 C:\Users\MyLogin\Documents D:\Backup
+    Or:   run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
 #>
 
 if ($Args.Count -eq 0){
     Write-Host "Missing parameters:
 
-    Use:  run-backup.ps SourceDir DestinationDir
+    Use:  run-backup.ps1 SourceDir DestinationDir
 
-    Like: run-backup.ps C:\Users\MyLogin\Documents D:\Backup
-    Or:   run-backup.ps C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
+    Like: run-backup.ps1 C:\Users\MyLogin\Documents D:\Backup
+    Or:   run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
     exit
 } elseif ($Args.Count -eq 2) {
     $srcDir=$Args[0]
