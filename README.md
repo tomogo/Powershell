@@ -8,3 +8,6 @@ If I create comething usefull for public use it will be here.
     Like:
     run-backup.ps1 C:\Users\MyLogin\Documents D:\Backup
     run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
+
+If you want run it from cmd you can start it like:
+powershell.exe -ExecutionPolicy ByPass -File run-backup.ps1 SourceDir DestinationDir
