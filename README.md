@@ -13,3 +13,6 @@ If you want run it from cmd:
 
     Like:
     powershell.exe -ExecutionPolicy ByPass -File run-backup.ps1 SourceDir DestinationDir
+    Or:
+    type run-backup.ps1 | powershell.exe SourceDir DestinationDir
+    
