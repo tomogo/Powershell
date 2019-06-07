@@ -10,5 +10,6 @@ If I create comething usefull for public use it will be here.
     run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
 
 If you want run it from cmd:
+
     Like:
     powershell.exe -ExecutionPolicy ByPass -File run-backup.ps1 SourceDir DestinationDir
