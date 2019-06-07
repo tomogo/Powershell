@@ -34,7 +34,7 @@ if ($Args.Count -eq 0){
     $srcDir=$Args[0]
     $dstDir=$Args[1]
 } else {
-    Write-Host "Wrong numbers of parameters!"
+    Write-Host "Wrong count of parameters!"
     exit
 }
 
