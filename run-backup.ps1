@@ -16,25 +16,25 @@
     Script posted over:
     https://github.com/tomogo/Powershell
 .EXAMPLE
-    Use:  run-backup.ps1 SourceDir DestinationDir
+    Use:  run-backup.ps SourceDir DestinationDir
 .EXAMPLE
-    Like: run-backup.ps1 C:\Users\MyLogin\Documents D:\Backup
-    Or:   run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
+    Like: run-backup.ps C:\Users\MyLogin\Documents D:\Backup
+    Or:   run-backup.ps C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
 #>
 
 if ($Args.Count -eq 0){
     Write-Host "Missing parameters:
 
-    Use:  run-backup.ps1 SourceDir DestinationDir
+    Use:  run-backup.ps SourceDir DestinationDir
 
-    Like: run-backup.ps1 C:\Users\MyLogin\Documents D:\Backup
-    Or:   run-backup.ps1 C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
+    Like: run-backup.ps C:\Users\MyLogin\Documents D:\Backup
+    Or:   run-backup.ps C:\Users\MyLogin\Documents \\MY-SERVER\Share\Backup"
     exit
 } elseif ($Args.Count -eq 2) {
     $srcDir=$Args[0]
     $dstDir=$Args[1]
 } else {
-    Write-Host "Wrong count of parameters!"
+    Write-Host "Wrong numbers of parameters!"
     exit
 }
 
@@ -42,26 +42,43 @@ if ($Args.Count -eq 0){
 $srcDir.TrimEnd("\")| Out-Null
 $dstDir.TrimEnd("\")| Out-Null
 
+Write-Host Starting backup of $srcDir into $dstDir
+
+$newDirs=0
+$transferredFiles=0
+$updatedFiles=0
+
 Get-ChildItem -Path $srcDir -Recurse -Force -ErrorAction SilentlyContinue -Directory | ForEach-Object{
-    $dstFile=$dstDir + "\" + $_.FullName.TrimStart($srcDir)
-    $dstFileExists=Test-Path $dstFile
+    #$dstFile=$dstDir + "\" + $_.FullName.TrimStart($srcDir)
+    $dstFile=$dstDir + "\" + $_.FullName.Remove(0,$srcDir.Length+1)
+    $dstFileExists=Test-Path -LiteralPath $dstFile
     if (!$dstFileExists) {
         Write-Host "Creating Directory: " $_.FullName " do: " $dstFile
-        Copy-Item -Path $_.FullName -Destination $dstFile -Force
+        Copy-Item -LiteralPath $_.FullName -Destination $dstFile -Force
+        $newDirs++
     }
 }
 
 Get-ChildItem -Path $srcDir -Recurse -Force -ErrorAction SilentlyContinue -File | ForEach-Object{
-    $dstFile=$dstDir + "\" + $_.FullName.TrimStart($srcDir)
-    $dstFileExists=Test-Path $dstFile
+    #$dstFile=$dstDir + "\" + $_.FullName.TrimStart($srcDir)
+    $dstFile=$dstDir + "\" + $_.FullName.Remove(0,$srcDir.Length+1)
+    $dstFileExists=Test-Path -LiteralPath $dstFile
     if (!$dstFileExists) {
         Write-Host "Transferring: " $_.FullName " to: " $dstFile
-        Copy-Item -Path $_.FullName -Destination $dstFile -Force
+        Copy-Item -LiteralPath $_.FullName -Destination $dstFile -Force
+        $transferredFiles++
     } else {
-        $overFile=Get-ChildItem -Path $dstFile
+        $overFile=Get-ChildItem -LiteralPath $dstFile
         if ($_.LastWriteTime -ne $overFile.LastWriteTime) {
             Write-Host "Updating: " $_.FullName " to: " $dstFile
-            Copy-Item -Path $_.FullName -Destination $dstFile -Force
+            Copy-Item -LiteralPath $_.FullName -Destination $dstFile -Force
+            $updatedFiles++
         }
     }
 }
+
+Write-Host Bakup finished.
+Write-Host
+Write-Host New directories $newDirs
+Write-Host New files $transferredFiles
+Write-Host Updated files $updatedFiles
