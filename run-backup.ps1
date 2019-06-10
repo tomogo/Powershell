@@ -68,7 +68,7 @@ Get-ChildItem -Path $srcDir -Recurse -Force -ErrorAction SilentlyContinue -File 
         Copy-Item -LiteralPath $_.FullName -Destination $dstFile -Force
         $transferredFiles++
     } else {
-        $overFile=Get-ChildItem -LiteralPath $dstFile
+        $overFile=Get-ChildItem -Hidden -LiteralPath $dstFile
         if ($_.LastWriteTime -ne $overFile.LastWriteTime) {
             Write-Host "Updating: " $_.FullName " to: " $dstFile
             Copy-Item -LiteralPath $_.FullName -Destination $dstFile -Force
